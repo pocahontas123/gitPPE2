@@ -1,0 +1,96 @@
+strong { font-weight: bold; }
+
+body {
+	background-color: #eeeeee;
+}
+
+#formConnexion form {
+	border: 2px solid grey;
+	border-radius: 6px;
+	width: 510px;
+	height: 300px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20%;
+	background-color: white;
+}
+
+#formConnexion2 form {
+	border: 2px solid grey;
+	border-radius: 6px;
+	width: 510px;
+	height: 300px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20%;
+	background-color: white;
+}
+
+#submit1 {
+	border-radius: 5px;
+	transition: width 0.5s;
+	top: -35px;
+}
+
+#submit1:hover, #submit2:hover{
+	width: 100px;
+}
+
+#submit2 {
+	border-radius: 5px;
+	transition: width 0.5s;
+	left: 550px;
+	top: -150px;
+}
+
+div#form1 a {
+	position: relative;
+	margin-left: 270px;
+	top: -55px;
+	text-decoration: none;
+	transition: font-size 0.3s;
+}
+
+
+#form1 a:hover {
+	font-size: 17px;
+}
+
+#menu a{
+
+	color: white;
+
+}
+
+#menu a{
+	font-size: 30px;
+	color: white;
+	transition: background-color 0.5s;
+	display: inline-block;
+	height: 60px;
+}
+#menu a:hover {
+	background-color: rgba(238, 238, 238, 0.2);
+	border-radius: 6px;
+	
+}
+
+div#toto a:nth-child(1) {
+	margin-left: 30px;
+}
+
+div#toto a:nth-child(2) {
+	margin-left: 600px;
+}
+
+div#toto a:nth-child(3) {
+	margin-left: 30px;
+}
+
+div div div form h1 {
+	position: absolute;
+	left: 216px;
+	font-size: 20px;
+}
