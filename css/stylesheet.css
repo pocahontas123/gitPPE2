@@ -1,3 +1,7 @@
+#button_menu {
+	height: 60px;
+}
+
 strong { font-weight: bold; }
 
 body {
@@ -93,4 +97,7 @@ div div div form h1 {
 	position: absolute;
 	left: 216px;
 	font-size: 20px;
+}
+
+#pageRecherche {
 }
