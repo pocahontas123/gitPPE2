@@ -3,17 +3,18 @@
 	session_start();
 	//Si j'ai SESSION id et password, c'est que je suis co donc je n'ai rien à faire dans 'oubli.php'
 	if( isset( $_SESSION['idEmploye'] ) AND isset( $_SESSION['mdp'] ) )  {
-		header("Location: compte.php");
+		header("Location: index.php");
 	}
-
 ?>
+
 <?php
 	//Si mon formulaire n'est pas vide
 	if( !empty( $_POST ) ) {
 		//J'extrais mes données du formulaire sous la forme '$identifiant' et '$password'
 		extract( $_POST );
 		//lien avec ma page de fonctions
-		require_once ('incl/functions.php');
+		require_once ('incl/fonctions/fonct_bd.php');
+		require_once ('incl/fonctions/fonct_oubli.php');
 		//tableau associatif qui contiendra les erreurs
 		$erreur = [];
 		//Si identifiant dans mon form. est vide alors 'il n'est pas fourni'
@@ -26,22 +27,19 @@
 		//Si le tableau n'a pas d'erreurs, formulaire OK !
 		if( !$erreur ) {
 			$subject = "Mot de passe perdu";
-			var_dump($_POST['nom']);
-			$membre = bdd_select( 'SELECT mdp FROM employe WHERE nom = ?', [$_POST['nom']] );
-			if( !empty ($membre) ) {
-	
-
-				$mdp = $membre[0]['mdp'];
-				$message ="Votre mdp est $mdp";
-				mail_html($subject, $message);
-				
-				$validation = "Mail envoyé !";
-				unset($nom);
-			}
+			
+			$mdp = password_recupe();
+			
+			$message ="Votre mdp est $mdp";
+			mail_html($subject, $message);
+			
+			$validation = "Mail envoyé !";
+			unset($nom);
 		}
 	}
 
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -66,7 +64,7 @@
 		<title></title>
 	</head>
 	<body>
-		<?php include("incl/menu.php"); ?>
+		<?php include("incl/menus/menu.php"); ?>
 		<div class="container-fluid">
 			<div id="formConnexion2" class="row">	
 				<div id="form2">

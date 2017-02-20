@@ -20,35 +20,5 @@
 	}
 	session_destroy();//détruit la session
 	//je redirige l'utilisateur sur la page pour se connecter
-	header('Location: connexion.php');
+	header('Location: index.php');
 ?>
-<!DOCTYPE html>
-<html>
-	<head lang="fr">
-		<meta charset="utf-8"/>
-		<meta name="description" content=" Guillou Fabien ppe2 bts stg sio slam option"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-		
-		 <!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-		<!-- Latest animated.css -->
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css"/>
-		<!-- Latest font-awesome -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/> 
-		<!-- jQuery library -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>	
-		<!-- Latest compiled JavaScript -->
-		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<!-- CSS -->
-		<link rel="stylesheet" href="css/reset.css"/>
-		<link rel="stylesheet" href="css/stylesheet.css"/>
-		<title></title>
-	</head>
-	<body>
-		<?php include("incl/menu.php"); ?>
-		<div class="container-fluid">
-
-		</div>
-		<script src="js/javascript.js"></script>
-	</body>
-</html>

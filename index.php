@@ -4,56 +4,25 @@
 		header('Location: login.php');
 	}
 	
-	/*try && catch permettent de gérer les erreurs
-	 On crée une instance (objet $bdd) grace à 'new PDO()'
-	 On signal que l'on travail avec 'mysql', que l'host est en 'localhost',
-	 et que le nom de la base de données s'appel 'tuto'. Ensuite, on donne
-	 le mdp de mysql et son nom: ici root(nom) et rien pour le mdp
-	*/
+	$idEmploye = $_SESSION['idEmploye'];
 	
 	require 'incl/fonctions/pdo.php';
+	require 'incl/fonctions/fonct_date.php';
+	require 'incl/fonctions/dbFormation.php';
+	require 'incl/fonctions/dbSelectionner.php';
+	require 'incl/fonctions/dbUtilisateur.php';
 	
+	if( date('d') == 1 AND date('m') == 1 ) {
+		reinitialiserJoursCreditUtilisateur($idEmploye);
+	}	
 	
-	
-	/*$req contient le resultat de la méthode de class 'query' de l'objet 'bdd'
-	 le résultat dans $req n'est pas 'utilisable' en l'état
-	 */
-	$req = $bdd->query( 'SELECT * FROM formation WHERE date_formation >= NOW()' );
-	
-	//récupère le pseudo de la session pour l'afficher à côté de "Vous êtes sur votre..."
-	$varID = $_SESSION['idEmploye'];
-	$req2 = $bdd->query( "SELECT nom, creditEmploye, nbJoursEmploye FROM employe WHERE idEmploye = $varID" );
-
-	$data = $req->fetchAll();
-	$data2 = $req2->fetchAll();
-	//$data3 = $req3->fetchAll();
-	//$data4 = $req4->fetchAll();
-	
-	$req3 = $bdd->query( 'SELECT YEAR(date_creation) FROM tabledate' );
-	$date = $req3->fetchAll();
-	$anneeActuelle = date("Y");
-	$dateActuelle = date("Y")."-01-01";
-	$anneeBD = $date[0]['YEAR(date_creation)'];
-	
-	if( $anneeActuelle > $anneeBD ) {
-		$req3 = $bdd->prepare( "UPDATE employe SET creditEmploye = 5000, nbJoursEmploye = 15 WHERE idEmploye = :idEmploye" );	
-		$req3->execute(array(
-			'idEmploye' => $_SESSION['idEmploye']
-		));
-		
-		
-		$req3 = $bdd->prepare( "UPDATE tabledate SET date_creation =  :dateActuelle WHERE id = 1" );		
-		$req3->execute(array(
-			'dateActuelle' => $dateActuelle
-		));
-	}
 ?>
 
 <!DOCTYPE html>
 <html>
 	<head lang="fr">
 		<meta charset="utf-8"/>
-		<meta name="description" content="Guillou Fabien ppe2 bts stg sio slam option"/>
+		<meta name="description" content=" Guillou Fabien ppe2 bts stg sio slam option"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 		
 		 <!-- Latest compiled and minified CSS -->
@@ -72,50 +41,119 @@
 		<title></title>
 	</head>
 	<body>
-
-		<?php include("incl/menus/menu.php"); ?>
-		<?php include("incl/menus/menu2.php"); ?>
-		<?php include("incl/menus/indexMenuInformation.php"); ?>
-		<?php include("incl/menus/menuRecherche.php"); ?>
 		
-		<h1>Formations disponibles: </h1>
-		<!-- On affiche le contenu de $data -->
-		<div id="formationsList1">
-			<?php foreach($data as $key => $formations) :?>
-			
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th>Titre</th>
-							<th>Contenu</th>
-							<th>Date</th>
-							<th>Duree</th>
-							<th>Nb Jours</th>
-							<th>Lieu</th>
-							<th>Prérequis</th>
-							<th>Crédit(s)</th>
-							<th>Inscription</th>
-							<th>PDF</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><strong><?= $formations['titre_formation']; ?></strong></td>
-							<td><?= $formations['contenu_formation'] ;?></td>
-							<td><?= $formations['date_formation']; ?></td>
-							<td><?= $formations['duree_formation']; ?></td>
-							<td><?= $formations['nbJours_formation']; ?></td>
-							<td><?= $formations['lieu_formation']; ?></td>
-							<td><?= $formations['prerequis_formation']; ?></td>
-							<td><?= $formations['credit_formation']; ?></td>
-							<td><a href="formation.php?idFormation=<?= $formations['idFormation'] ;?>"><i><button class="btn btn-primary">inscription</button></i></a></td>
-							<td><i><button class="btn btn-info">Convertir pdf</button></i></td>
-						</tr>
-					</tbody>
-				</table>						
+		<?php include("incl/menus/menu.php"); ?>
+			<?php
+				if (!isset($_GET['inscription']) AND empty($_GET['inscription'])) {
+					if (isset($_GET['formation']) AND $_GET['formation']==1) {
+						include("mesFormation.php");
+					}
+					
+					elseif (isset($_GET['formation']) AND $_GET['formation']==2) {
+						include("formationDisponible.php");
+					}
 
-			<?php endforeach;?>
-		</div>
+					elseif (isset($_GET['formation']) AND $_GET['formation']==3) {
+						include("historiqueFormation.php");
+					}
+
+					elseif (isset($_GET['formation']) AND $_GET['formation']==4) {
+						include("search.php");
+					}
+					else
+					{
+						include("mesFormation.php");
+					}
+				}
+				elseif (isset($_GET['inscription']) AND $_GET['inscription']==1 AND isset($_GET['idFormation']) {
+					// vérification de nbjour et crédit suffisant pour l'employé pour cette formation :
+					//Appel à la fonction JourCreditFormation($idFormation) du fichier dbFormation.php pour avoir le crédit et la duree de la formation
+					$joursCreditFormation = jourCreditFormation($idFormation);
+				
+					//appel de la fonction suffisanceJoursCreditUtilisateur($idEmploye) qui doit être créée dans le fichier dbUtilisateur.php . cette fonction va nous renvoyer un booléen vrai si jour crédit suffisant faux sinon
+					if(suffisanceJoursCreditUtilisateur($joursCreditFormation, $idEmploye)) {
+						//faire le point 10 du mail précédent
+						ajoutSelection($idEmploye, $idFormation);
+						soustractionJoursCreditUtilisateur($idEmploye, $idFormation);
+						
+						if(isset($_GET['formation'] AND $_GET['formation']==1) {
+							include('mesFormation.php');
+						
+						}elseif (isset($_GET['formation']) AND $_GET['formation']==2) {
+							include("formationDisponible.php");
+						}
+
+						elseif (isset($_GET['formation']) AND $_GET['formation']==3) {
+							include("historiqueFormation.php");
+						}
+
+						elseif (isset($_GET['formation']) AND $_GET['formation']==4) {
+							include("search.php");
+						}
+						else {
+							include("mesFormation.php");
+						}
+					}
+					else
+					{
+						//afficher un message d'erreur
+						echo 'ERREUR';
+					}
+					
+					if(isset($_GET['formation']) AND $_GET['formation']==1) {
+						include("mesFormation.php");
+					}
+
+					elseif (isset($_GET['formation']) AND $_GET['formation']==2) {
+						include("formationDisponible.php");
+					}
+
+					elseif (isset($_GET['formation']) AND $_GET['formation']==3) {
+						include("historiqueFormation.php");
+					}
+
+					elseif (isset($_GET['formation']) AND $_GET['formation']==4) {
+						include("search.php");
+					}
+					else {
+						include("mesFormation.php");
+					}
+					}
+
+					}
+					elseif (isset($_GET['inscription']) AND $_GET['inscription']==0 AND isset($_GET['idFormation'])
+					{
+						// faire le point 9 du mail précédent
+						// message indiquant la bonne désincription
+						supprimerSelection($idEmploye, $idFormation);
+						ajoutJourCreditUtilisateur($idEmploye, $idFormation);
+						echo 'Désinscription ok';
+				}
+				
+				
+				 if (isset($_GET['formation']) AND $_GET['formation']==1) {
+					include("mesFormation.php");
+				}
+
+				elseif (isset($_GET['formation']) AND $_GET['formation']==2) {
+					include("formationDisponible.php");
+				}
+
+				elseif (isset($_GET['formation']) AND $_GET['formation']==3) {
+					include("historiqueFormation.php");
+				}
+
+				elseif (isset($_GET['formation']) AND $_GET['formation']==4) {
+					include("search.php");
+				}
+				else
+				{
+				include("mesFormation.php");
+				}
+				}
+
+				}
+?> 
 		<script src="js/javascript.js"></script>
 	</body>
 </html>
