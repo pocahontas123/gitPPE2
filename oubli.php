@@ -26,14 +26,20 @@
 		
 		//Si le tableau n'a pas d'erreurs, formulaire OK !
 		if( !$erreur ) {
-			$subject = "Mot de passe perdu";
+			$subject = "Récupération du mot de passe perdu";
 			
 			$mdp = password_recupe();
 			
-			$message ="Votre mdp est $mdp";
+			$message ="Bonjour $nom,\n
+
+Vous avez demandé à récupérer votre mot de passe. Votre mdp est $mdp\n
+À bientôt\n
+L'équipe de la Maison des Ligues de Lorraine
+
+";
 			mail_html($subject, $message);
 			
-			$validation = "Mail envoyé !";
+			$validation = "Nous venons de vous envoyer un email contenant votre mot de passe. !";
 			unset($nom);
 		}
 	}
@@ -64,13 +70,18 @@
 		<title></title>
 	</head>
 	<body>
-		<?php include("incl/menus/menu.php"); ?>
+		<style>
+		#form h1 {
+			margin-left: -100px;
+			width: 250px;
+		}
+		</style>
 		<div class="container-fluid">
 			<div id="formConnexion2" class="row">	
 				<div id="form2">
 					<form id="form" class="form-horyzontal" role="form" action="oubli.php" method="POST">
-						<h1>Oubli</h1>
-						
+						<h1>Récupération du mot de passe</h1>
+
 						
 						<?php if( isset($erreur['nom']) ) :?>
 							<div id="erreurEmail" class="btn btn-danger"><?= $erreur['nom'] ?></div>
@@ -82,16 +93,16 @@
 						
 						<br/><br/>
 						<div class="input-group margin-bottom-sm">
-						  <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-						  <input class="form-control" type="text" id="text2" name="nom" placeholder="Identifiant..." value="<?php if(isset( $nom  ) ) :?><?= $nom; ?><?php endif; ?>"/>
+							<span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+							<input class="form-control" type="text" id="text2" name="nom" placeholder="Identifiant..." value="<?php if(isset( $nom  ) ) :?><?= $nom; ?><?php endif; ?>"/>
 						</div>
 						<br/><br/>
-						</div>
+				</div>
 						<br/><br/><br/>
 						<div class="input-group margin-bottom-sm">
-						  <button type="submit" id="submit2" class="btn btn-primary form-control">Envoyez</button>
-						</div>	
-					</form>	
+						  <button type="submit" id="submit2" class="btn btn-primary form-control">M'envoyer mon mot de passe</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

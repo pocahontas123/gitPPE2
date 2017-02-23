@@ -15,7 +15,7 @@
 	if( date('d') == 1 AND date('m') == 1 ) {
 		reinitialiserJoursCreditUtilisateur($idEmploye);
 	}	
-	
+	extract($_GET);
 ?>
 
 <!DOCTYPE html>
@@ -43,117 +43,116 @@
 	<body>
 		
 		<?php include("incl/menus/menu.php"); ?>
-			<?php
-				if (!isset($_GET['inscription']) AND empty($_GET['inscription'])) {
-					if (isset($_GET['formation']) AND $_GET['formation']==1) {
-						include("mesFormation.php");
-					}
-					
-					elseif (isset($_GET['formation']) AND $_GET['formation']==2) {
-						include("formationDisponible.php");
-					}
-
-					elseif (isset($_GET['formation']) AND $_GET['formation']==3) {
-						include("historiqueFormation.php");
-					}
-
-					elseif (isset($_GET['formation']) AND $_GET['formation']==4) {
-						include("search.php");
-					}
-					else
-					{
-						include("mesFormation.php");
-					}
-				}
-				elseif (isset($_GET['inscription']) AND $_GET['inscription']==1 AND isset($_GET['idFormation']) {
-					// vérification de nbjour et crédit suffisant pour l'employé pour cette formation :
-					//Appel à la fonction JourCreditFormation($idFormation) du fichier dbFormation.php pour avoir le crédit et la duree de la formation
-					$joursCreditFormation = jourCreditFormation($idFormation);
-				
-					//appel de la fonction suffisanceJoursCreditUtilisateur($idEmploye) qui doit être créée dans le fichier dbUtilisateur.php . cette fonction va nous renvoyer un booléen vrai si jour crédit suffisant faux sinon
-					if(suffisanceJoursCreditUtilisateur($joursCreditFormation, $idEmploye)) {
-						//faire le point 10 du mail précédent
-						ajoutSelection($idEmploye, $idFormation);
-						soustractionJoursCreditUtilisateur($idEmploye, $idFormation);
-						
-						if(isset($_GET['formation'] AND $_GET['formation']==1) {
-							include('mesFormation.php');
-						
-						}elseif (isset($_GET['formation']) AND $_GET['formation']==2) {
-							include("formationDisponible.php");
-						}
-
-						elseif (isset($_GET['formation']) AND $_GET['formation']==3) {
-							include("historiqueFormation.php");
-						}
-
-						elseif (isset($_GET['formation']) AND $_GET['formation']==4) {
-							include("search.php");
-						}
-						else {
-							include("mesFormation.php");
-						}
-					}
-					else
-					{
-						//afficher un message d'erreur
-						echo 'ERREUR';
-					}
-					
-					if(isset($_GET['formation']) AND $_GET['formation']==1) {
-						include("mesFormation.php");
-					}
-
-					elseif (isset($_GET['formation']) AND $_GET['formation']==2) {
-						include("formationDisponible.php");
-					}
-
-					elseif (isset($_GET['formation']) AND $_GET['formation']==3) {
-						include("historiqueFormation.php");
-					}
-
-					elseif (isset($_GET['formation']) AND $_GET['formation']==4) {
-						include("search.php");
-					}
-					else {
-						include("mesFormation.php");
-					}
-					}
-
-					}
-					elseif (isset($_GET['inscription']) AND $_GET['inscription']==0 AND isset($_GET['idFormation'])
-					{
-						// faire le point 9 du mail précédent
-						// message indiquant la bonne désincription
-						supprimerSelection($idEmploye, $idFormation);
-						ajoutJourCreditUtilisateur($idEmploye, $idFormation);
-						echo 'Désinscription ok';
-				}
-				
-				
-				 if (isset($_GET['formation']) AND $_GET['formation']==1) {
+		<?php
+			if ( !isset( $_GET['inscription'] ) AND empty( $_GET['inscription'] )) {
+				if ( isset( $_GET['formation'] ) AND $_GET['formation'] == 1) {
 					include("mesFormation.php");
 				}
 
-				elseif (isset($_GET['formation']) AND $_GET['formation']==2) {
+				elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 2 ) {
 					include("formationDisponible.php");
 				}
 
-				elseif (isset($_GET['formation']) AND $_GET['formation']==3) {
+				elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 3 ) {
 					include("historiqueFormation.php");
 				}
 
-				elseif (isset($_GET['formation']) AND $_GET['formation']==4) {
+				elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 4 ) {
 					include("search.php");
+					
+				}else {
+					include("mesFormation.php");
 				}
-				else
-				{
-				include("mesFormation.php");
+				
+			}elseif ( isset( $_GET['inscription'] ) AND $_GET['inscription'] == 1 AND isset( $_GET['idFormation'] ) ) {
+				//Si j'ai une inscription = '1' cela veut dire que je m'INSCRIS à une formation
+				
+				//Récupère le prix en crédits et jours de la formation dans un array $data
+				$joursCreditFormation = jourCreditFormation($idFormation);
+
+				//suffisanceJoursCreditUtilisateur($idEmploye) return 'true' si j'ai assez pour la formation ou 'false' si non
+				If ( suffisanceJoursCreditUtilisateur($joursCreditFormation, $idEmploye) ) {
+					//Si 'true', je rajoute ma formation avec 'ajoutSelection()'
+					ajoutSelection($idEmploye, $idFormation);
+					
+					//Ensuite je déduis le coût de celle-ci avec 'soustractionJoursCreditUtilisateur()'
+					soustractionJoursCreditUtilisateur($idEmploye, $idFormation);
+					
+					if ( isset( $_GET['formation'] ) AND $_GET['formation'] == 1) {
+						include("mesFormation.php");
+					}
+
+					elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 2 ) {
+						include("formationDisponible.php");
+					}
+
+					elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 3) {
+						include("historiqueFormation.php");
+					}
+
+					elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 4 ) {
+						include("search.php");
+					
+					}else {
+						include("mesFormation.php");
+					}
+				
+				//Si 'false' alors j'ai pas assez de crédits ou de jours pour m'inscrire à la formation
+				}else {
+					echo ('Manque des crédits ou des jours pour m\'inscrire à la formation');
+					
+					if ( isset( $_GET['formation'] ) AND $_GET['formation'] == 1 ) {
+						include("mesFormation.php");
+					}
+
+					elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 2 ) {
+						include("formationDisponible.php");
+					}
+
+					elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 3) {
+						include("historiqueFormation.php");
+					}
+
+					elseif ( isset($_GET['formation'] ) AND $_GET['formation'] == 4 ) {
+						include("search.php");
+					
+					}else {
+						include("mesFormation.php");
+					}
 				}
-				}
+				
+			//Si j'ai une inscription = '0' alors je me DESINSCRIS
+			}elseif ( isset( $_GET['inscription'] ) AND $_GET['inscription'] == 0 AND isset( $_GET['idFormation'] ) ) {
+				//Je supprime ma formation de la table 'selectionner'
+				supprimerSelection($idEmploye, $idFormation);
+				
+				//Je récupère mes crédits et jours dépensés
+				ajoutJourCreditUtilisateur($idEmploye, $idFormation);
+				
+				//Message de confirmation de la désinscription
+				echo 'Désinscription à votre formation OK';
+
+				if ( isset($_GET['formation'] ) AND $_GET['formation'] == 1 ) {
+					include("mesFormation.php");
 
 				}
-?> 
+				
+				elseif ( isset($_GET['formation'] ) AND $_GET['formation'] == 2 ) {
+					include("formationDisponible.php");
+				}
+
+				elseif ( isset( $_GET['formation']) AND $_GET['formation'] == 3 ) {
+					include("historiqueFormation.php");
+				}
+
+				elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 4 ) {
+					include("search.php");
+					
+				}else {
+					include("mesFormation.php");
+				}
+			}
+		?> 
 		<script src="js/javascript.js"></script>
 	</body>
 </html>

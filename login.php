@@ -78,7 +78,6 @@
 		<title></title>
 	</head>
 	<body>
-		<?php include("incl/menus/menu.php"); ?>
 		<div class="container-fluid">
 			<div id="formConnexion" class="row">	
 				<div id="form1">

@@ -11,7 +11,7 @@
 	
 		<?php $idFormation = $formations['idFormation']; ?>
 		
-		<?php $data2 = test($idEmploye, $idFormation); ?>
+		<?php $data2 = rechercheFormationsEtats($idEmploye, $idFormation); ?>
 		
 		<?php foreach($data2 as $key => $formation_inscrite) : ?>
 	
