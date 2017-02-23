@@ -32,8 +32,8 @@
 		return $data;
 	};
 	
-	//
-	function test(int $idEmploye, int $idFormation) : array{
+	//Affichage des formations de l'utilisateur + état
+	function rechercheFormationsEtats(int $idEmploye, int $idFormation) : array{
 		$data = bdd_select( "SELECT formation.idFormation, selectionner.etat  from formation INNER join selectionner on formation.idFormation = selectionner.idFormation INNER join employe on employe.idEmploye = selectionner.idEmploye WHERE employe.idEmploye= $idEmploye AND formation.idFormation=$idFormation");
 		return $data;
 	};

@@ -51,10 +51,10 @@
 		return $data;
 	};
 	
-	//
+	//Savoir si j'ai assez de jours et de crédit pour avoir une formation
 	function suffisanceJoursCreditUtilisateur(array $joursCreditFormation, int $idEmploye) : bool{
 		$data = getNomJoursCredit($idEmploye);
-		if($data[0]['credit_formation'] >= $joursCreditFormation['credit_formation'] && $data[0]['duree_formation'] >= $jourCreditFormation['duree_formation']) {
+		if($data[0]['creditEmploye'] >= $joursCreditFormation[0]['credit_formation'] && $data[0]['nbJoursEmploye'] >= $jourCreditFormation[0]['duree_formation']) {
 			return true;
 		}else {
 			return false;
