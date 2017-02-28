@@ -31,6 +31,7 @@
 			$req = $bdd->query( $query );
 		}
 		$req->closeCursor();
+		return $req;
 	};
 	
 	//Gère les requêtes de type 'UPDATE' dans la base de données

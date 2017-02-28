@@ -1,3 +1,7 @@
+.yellowMenu {
+	background-color: yellow;
+}
+
 #button_menu {
 	height: 60px;
 }
@@ -38,15 +42,26 @@ body {
 	top: -35px;
 }
 
-#submit1:hover, #submit2:hover{
-	width: 100px;
+#submit1:hover, #submit2:hover, #connexionBouton a:hover {
+	width: 250px;
 }
+
 
 #submit2 {
 	border-radius: 5px;
 	transition: width 0.5s;
 	left: 550px;
 	top: -150px;
+}
+
+
+#connexionBouton a{
+	position: absolute;
+	left: 550px;
+	top: 420px;
+	width: 220px;
+	transition: width 0.5s;
+	
 }
 
 div#form1 a {
@@ -96,6 +111,7 @@ div#toto a:nth-child(3) {
 div div div form h1 {
 	position: absolute;
 	left: 216px;
+	top: 50px;
 	font-size: 20px;
 }
 

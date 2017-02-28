@@ -27,7 +27,8 @@
 		if( $membre ) {
 			$_SESSION['idEmploye'] = $membre['idEmploye'];
 			$_SESSION['mdp'] = $membre['mdp'];
-			$_SESSION['nom'] = $membre['nom'];
+			$_SESSION['login'] = $membre['login'];
+			$_SESSION['typeEmploye'] = $membre['typeEmploye'];
 			//On me redirige sur 'compte.php' car je n'ai rien à faire dans connexion si je suis déjà connecté
 			header("Location: index.php");
 		}else {
@@ -38,8 +39,8 @@
 		
 		
 		//Gestion erreur identifiant vide
-		if( empty( $nom ) ) {
-			$erreur['nom'] = "L'identifiant n'est pas fourni";
+		if( empty( $login ) ) {
+			$erreur['login'] = "L'identifiant n'est pas fourni";
 		
 		//Si l'identifiant est disponible alors il n'existe pas
 		}
@@ -85,8 +86,8 @@
 						<h1>Connexion</h1>
 						
 						<!--  -->
-						<?php if( isset($erreur['nom']) ) :?>
-							<div id="erreurEmail" class="btn btn-danger"><?= $erreur['nom'] ?></div>
+						<?php if( isset($erreur['login']) ) :?>
+							<div id="erreurEmail" class="btn btn-danger"><?= $erreur['login'] ?></div>
 						<?php endif; ?><br/>
 						
 						<!--  -->
@@ -105,7 +106,7 @@
 						<br/><br/>
 						<div class="input-group margin-bottom-sm">
 						  <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-						  <input class="form-control" type="text" id="nom" name="nom" placeholder="Identifiant..." value="<?php if( isset( $nom ) ) :?><?= $nom; ?><?php endif; ?>"/>
+						  <input class="form-control" type="text" id="login" name="login" placeholder="Identifiant..." value="<?php if( isset( $login ) ) :?><?= $login; ?><?php endif; ?>"/>
 						</div>
 						<br/><br/>
 						<div class="input-group margin-bottom-sm">
@@ -116,7 +117,7 @@
 						<div class="input-group margin-bottom-sm">
 						  <button type="submit" id="submit1" class="btn btn-primary form-control">Envoyez</button>
 						</div>	
-						<a href="oubli.php">Mot de passe oublié</a>		
+						<a href="oubli.php?oubli=1">Mot de passe oublié</a>		
 					</form>	
 				</div>
 			</div>

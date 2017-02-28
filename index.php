@@ -5,6 +5,7 @@
 	}
 	
 	$idEmploye = $_SESSION['idEmploye'];
+	$typeEmploye = $_SESSION['typeEmploye'];
 	
 	require 'incl/fonctions/pdo.php';
 	require 'incl/fonctions/fonct_date.php';
@@ -12,10 +13,21 @@
 	require 'incl/fonctions/dbSelectionner.php';
 	require 'incl/fonctions/dbUtilisateur.php';
 	
+	//Si je suis le 01/01 alors je réinitialise mes crédits
 	if( date('d') == 1 AND date('m') == 1 ) {
 		reinitialiserJoursCreditUtilisateur($idEmploye);
-	}	
+	}
+	
 	extract($_GET);
+	
+	//Si je reçois les 3 informations de mon $_GET de 'mesEmployes.php' du bouton 'valider'
+	if( $_GET['idFormation'] AND $_GET['idEmploye'] AND $_GET['formation'] == 5 ) {
+		//Je valide la formation de l'employé
+		validerSelection($idEmploye, $idFormation);	
+		
+		echo '<script>alert("Vous avez validé la formation '.$titre_formation.' de : '.$nomEmploye.'-'.$prenomEmploye.'")</script>';
+		header("Refresh: 0; url=index.php?formation=$formation");
+	}
 ?>
 
 <!DOCTYPE html>
@@ -44,28 +56,39 @@
 		
 		<?php include("incl/menus/menu.php"); ?>
 		<?php
+			//Si je n'ai pas de variable 'inscription' c'est que je n'essaie pas de m'inscrire ou me désinscrire d'une formation
 			if ( !isset( $_GET['inscription'] ) AND empty( $_GET['inscription'] )) {
+				//Gestion basique. Si j'ai formation = 1, je dois afficher 'mesFormation.php'
 				if ( isset( $_GET['formation'] ) AND $_GET['formation'] == 1) {
 					include("mesFormation.php");
 				}
-
+				
+				//Si j'ai formation = 2, je dois afficher 'formationDisponible.php'
 				elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 2 ) {
 					include("formationDisponible.php");
 				}
-
+				
+				//Si j'ai formation = 3, je dois afficher 'historiqueFormation.php'
 				elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 3 ) {
 					include("historiqueFormation.php");
 				}
 
+				//Si j'ai formation = 4, je dois afficher 'search.php'
 				elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 4 ) {
 					include("search.php");
-					
+				
+				
+				//Accessible pour un chef d'équipe 'Formation(s) de mes employés
+				}elseif ( isset ($_GET['formation'] ) AND $_GET['formation'] == 5 AND $typeEmploye == 3 ) {
+						include("mesEmployes.php");
+				
+				//Par défaut (pour finir la condition), j'affiche 'mesFormation.php'
 				}else {
 					include("mesFormation.php");
 				}
 				
-			}elseif ( isset( $_GET['inscription'] ) AND $_GET['inscription'] == 1 AND isset( $_GET['idFormation'] ) ) {
-				//Si j'ai une inscription = '1' cela veut dire que je m'INSCRIS à une formation
+			//Si j'ai une inscription = '1' cela veut dire que je m'INSCRIS à une formation	
+			}elseif ( isset( $_GET['inscription'] ) AND $_GET['inscription'] == 1 AND isset( $_GET['idFormation'] )  AND rechercheIdFormation($_GET['idFormation'])) {
 				
 				//Récupère le prix en crédits et jours de la formation dans un array $data
 				$joursCreditFormation = jourCreditFormation($idFormation);
@@ -78,8 +101,19 @@
 					//Ensuite je déduis le coût de celle-ci avec 'soustractionJoursCreditUtilisateur()'
 					soustractionJoursCreditUtilisateur($idEmploye, $idFormation);
 					
+					$nomFormation = rechercheNomFormation($idFormation);
+					$nomFormation = $nomFormation[0]['titre_Formation'];
+					
+					//Message de confirmation de la désinscription	
+					echo '<script>alert("Vous venez de vous inscrire à la formation: '.$nomFormation.'")</script>';
+					
+					//récupère le numéro 'formation ' pour savoir où rediriger avec le header()
+					$formation = $_GET['formation'];
+					header( "Refresh: 0; url=index.php?formation=$formation" );
+					
 					if ( isset( $_GET['formation'] ) AND $_GET['formation'] == 1) {
 						include("mesFormation.php");
+						
 					}
 
 					elseif ( isset( $_GET['formation'] ) AND $_GET['formation'] == 2 ) {
@@ -99,7 +133,13 @@
 				
 				//Si 'false' alors j'ai pas assez de crédits ou de jours pour m'inscrire à la formation
 				}else {
-					echo ('Manque des crédits ou des jours pour m\'inscrire à la formation');
+					$nomFormation = rechercheNomFormation($idFormation);
+					$nomFormation = $nomFormation[0]['titre_Formation'];
+					
+					//Message de confirmation de la désinscription	
+					echo '<script>alert("Vous n\'avez pas suffisement de jours ou de crédits pour cette formation: '.$nomFormation.'")</script>';
+					$formation = $_GET['formation'];
+					header( "Refresh: 0; url=index.php?formation=$formation" );
 					
 					if ( isset( $_GET['formation'] ) AND $_GET['formation'] == 1 ) {
 						include("mesFormation.php");
@@ -122,15 +162,20 @@
 				}
 				
 			//Si j'ai une inscription = '0' alors je me DESINSCRIS
-			}elseif ( isset( $_GET['inscription'] ) AND $_GET['inscription'] == 0 AND isset( $_GET['idFormation'] ) ) {
+			}elseif ( isset( $_GET['inscription'] ) AND $_GET['inscription'] == 0 AND isset( $_GET['idFormation'] ) AND rechercheIdFormation($_GET['idFormation'])) {
 				//Je supprime ma formation de la table 'selectionner'
 				supprimerSelection($idEmploye, $idFormation);
-				
+
 				//Je récupère mes crédits et jours dépensés
 				ajoutJourCreditUtilisateur($idEmploye, $idFormation);
 				
-				//Message de confirmation de la désinscription
-				echo 'Désinscription à votre formation OK';
+				$nomFormation = rechercheNomFormation($idFormation);
+				$nomFormation = $nomFormation[0]['titre_Formation'];
+				
+				//Message de confirmation de la désinscription	
+				$formation = $_GET['formation'];
+				echo '<script>alert("Vous êtes désinscrit de la formation: '.$nomFormation.'")</script>';
+				header("Refresh: 0; url=index.php?formation=$formation");
 
 				if ( isset($_GET['formation'] ) AND $_GET['formation'] == 1 ) {
 					include("mesFormation.php");
@@ -151,8 +196,17 @@
 				}else {
 					include("mesFormation.php");
 				}
-			}
+				
+			}else {
+                include("mesFormation.php");
+            }
 		?> 
 		<script src="js/javascript.js"></script>
+		<script>
+			$(document).ready(function(){
+				var url = window.location.href.substr(window.location.href.lastIndexOf("/") + 1);
+				$('[href$="'+url+'"]').parent().addClass("yellowMenu");
+			});
+		</script>
 	</body>
 </html>

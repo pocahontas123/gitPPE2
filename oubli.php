@@ -1,51 +1,11 @@
 ﻿<?php
 	//demarre la session
 	session_start();
-	//Si j'ai SESSION id et password, c'est que je suis co donc je n'ai rien à faire dans 'oubli.php'
+	//Si j'ai SESSION id et password, c'est que je suis co donc je n'ai rien ࡦaire dans 'oubli.php'
 	if( isset( $_SESSION['idEmploye'] ) AND isset( $_SESSION['mdp'] ) )  {
 		header("Location: index.php");
 	}
 ?>
-
-<?php
-	//Si mon formulaire n'est pas vide
-	if( !empty( $_POST ) ) {
-		//J'extrais mes données du formulaire sous la forme '$identifiant' et '$password'
-		extract( $_POST );
-		//lien avec ma page de fonctions
-		require_once ('incl/fonctions/fonct_bd.php');
-		require_once ('incl/fonctions/fonct_oubli.php');
-		//tableau associatif qui contiendra les erreurs
-		$erreur = [];
-		//Si identifiant dans mon form. est vide alors 'il n'est pas fourni'
-		if( empty( $nom ) ) {
-			$erreur['nom'] = "L'identifiant n'est pas fourni";
-		}elseif( !identifiant_exists()) {
-			$erreur['nom'] = "L'identifiant n'existe pas";
-		}
-		
-		//Si le tableau n'a pas d'erreurs, formulaire OK !
-		if( !$erreur ) {
-			$subject = "Récupération du mot de passe perdu";
-			
-			$mdp = password_recupe();
-			
-			$message ="Bonjour $nom,\n
-
-Vous avez demandé à récupérer votre mot de passe. Votre mdp est $mdp\n
-À bientôt\n
-L'équipe de la Maison des Ligues de Lorraine
-
-";
-			mail_html($subject, $message);
-			
-			$validation = "Nous venons de vous envoyer un email contenant votre mot de passe. !";
-			unset($nom);
-		}
-	}
-
-?>
-
 
 <!DOCTYPE html>
 <html>
@@ -69,43 +29,15 @@ L'équipe de la Maison des Ligues de Lorraine
 		<link rel="stylesheet" href="css/stylesheet.css"/>
 		<title></title>
 	</head>
-	<body>
-		<style>
-		#form h1 {
-			margin-left: -100px;
-			width: 250px;
-		}
-		</style>
-		<div class="container-fluid">
-			<div id="formConnexion2" class="row">	
-				<div id="form2">
-					<form id="form" class="form-horyzontal" role="form" action="oubli.php" method="POST">
-						<h1>Récupération du mot de passe</h1>
-
-						
-						<?php if( isset($erreur['nom']) ) :?>
-							<div id="erreurEmail" class="btn btn-danger"><?= $erreur['nom'] ?></div>
-						<?php endif; ?><br/>
-
-						<?php if( isset($validation) ) :?>
-							<div id="erreurEmail" class="btn btn-success"><?= $validation ?></div>
-						<?php endif; ?><br/>
-						
-						<br/><br/>
-						<div class="input-group margin-bottom-sm">
-							<span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-							<input class="form-control" type="text" id="text2" name="nom" placeholder="Identifiant..." value="<?php if(isset( $nom  ) ) :?><?= $nom; ?><?php endif; ?>"/>
-						</div>
-						<br/><br/>
-				</div>
-						<br/><br/><br/>
-						<div class="input-group margin-bottom-sm">
-						  <button type="submit" id="submit2" class="btn btn-primary form-control">M'envoyer mon mot de passe</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-		<script src="js/javascript.js"></script>
-	</body>
-</html>
+<?php
+	extract($_GET);
+	if ( isset( $_GET['oubli'] ) AND $_GET['oubli'] == 1 ) {
+		include("oubliNom.php");
+		
+	}elseif ( isset( $_GET['oubli'] ) AND $_GET['oubli'] == 2 ) {
+		include("oubliMail.php");
+	
+	}else {
+		include("oubliNom.php");
+	}	
+?>

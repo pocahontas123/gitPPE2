@@ -5,9 +5,6 @@
 			<div class="navbar-header">
 			  <a class="navbar-brand" href="#">PPE 2|</a>
 			</div>
-			<ul class="nav navbar-nav">
-			  <li class="active"><a href="index.php">Page principale</a></li>
-			</ul>
 			<ul class="nav navbar-nav navbar-right">
 			
 			<!-- Si je n'ai pas d''id' ou 'password' de SESSION, j'affiche connexion-->
@@ -24,7 +21,7 @@
 								<?php $data = getNomJoursCredit($idEmploye); ?>
 								
 								<button id="button_menu" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<i class="fa fa-bars fa-2x" aria-hidden="false"></i> Bienvenu <strong><?= $data[0]['nom']; ?></strong><span class="caret"></span>
+									<i class="fa fa-bars fa-2x" aria-hidden="false"></i> Bienvenu <strong><?= $data[0]['login']; ?></strong><span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
 									<br/>
@@ -49,6 +46,12 @@
 				<li><a href="index.php?formation=1">Mes formation(s)</a></li> 
 				<li><a href="index.php?formation=2">Formation(s) disponible(s)</a></li>
 				<li><a href="index.php?formation=3">Historique</a></li>
+				
+				<?php
+				if( $typeEmploye == 3 ) {?>		
+				<li><a href="index.php?formation=5">Formation(s) de mes employés</a></li>
+				<?php };?>
+			
 			</ol>
 		</nav>
 	</div>	

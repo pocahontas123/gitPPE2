@@ -1,4 +1,8 @@
 <?php
+session_start();
+if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
+    header('Location: login.php');
+}
 	require_once "html2pdf/html2pdf.class.php";
 	extract($_GET);
 	ob_start();
