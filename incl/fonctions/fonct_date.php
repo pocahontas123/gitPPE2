@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 	//Change le la présentation de la date en 'd-m-Y à H\h:i\m\i\n'
 	function afficherDate($date) {

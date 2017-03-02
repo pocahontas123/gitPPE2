@@ -6,19 +6,19 @@
 	4) Je me redirige vers ma page de 'connexion.php'
 
 	*/
-
 	session_start();//obligatoire, je demarre ma session
 	$_SESSION = [];// Je vide mes données de session
 	
-	//Je delet les cookies
-	if (ini_get("session.use_cookies")) {
+	//Je delet les cookies (même si actuellement, il n'y en a pas)
+	if ( ini_get("session.use_cookies") ) {
 		$params = session_get_cookie_params();
-		setcookie(session_name(), '', time() - 42000,
+		setcookie( session_name(), '', time() - 42000,
 			$params["path"], $params["domain"],
 			$params["secure"], $params["httponly"]
 		);
 	}
 	session_destroy();//détruit la session
+	
 	//je redirige l'utilisateur sur la page pour se connecter
-	header('Location: index.php');
+	header( 'Location: index.php' );
 ?>

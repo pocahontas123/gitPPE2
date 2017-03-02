@@ -47,21 +47,32 @@ body {
 }
 
 
-#submit2 {
-	border-radius: 5px;
-	transition: width 0.5s;
-	left: 550px;
-	top: -150px;
+
+
+
+#wrap {
+	position: absolute;
+	left: 600px;
+	min-width: 300px;
+	top: 350px;
+	background-color: red;
 }
 
-
-#connexionBouton a{
-	position: absolute;
-	left: 550px;
-	top: 420px;
-	width: 220px;
+#wrapContent1 {
+	position: relative;
+	width: 200px;
+	top: -35px;
 	transition: width 0.5s;
-	
+}
+
+#connexionBouton {
+	position: relative;
+	top: -30px;
+	transition: width 0.5s;
+}
+
+#wrapContent1:hover, #connexionBouton:hover {
+	width: 300px;
 }
 
 div#form1 a {
@@ -76,6 +87,7 @@ div#form1 a {
 #form1 a:hover {
 	font-size: 17px;
 }
+
 
 #menu a{
 

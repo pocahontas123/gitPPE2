@@ -1,9 +1,8 @@
 <?php
-
-	//require('dbFormation.php');
 	
 	//Permet de RECUPERER les jours et crédits de la formation après s'être DESINSCRIT
 	function ajoutJourCreditUtilisateur(int $idEmploye, int $idFormation) {
+		
 		//récupère jours (nbJours_formation) + crédits (credit_formation) de la formation
 		$data = jourCreditFormation($idFormation);
 
@@ -19,6 +18,7 @@
 	
 	//Permet de REDUIRE les jours et crédits de la formation après s'être INSCRIT
 	function soustractionJoursCreditUtilisateur(int $idEmploye, int $idFormation) {
+		
 		//récupère jours (nbJours_formation) + crédits (credit_formation) de la formation
 		$data = jourCreditFormation($idFormation);
 
@@ -45,9 +45,33 @@
 		] );
 	};
 	
+	//Connaître la valeur du réinitialiser dans la BDD
+	function reinitialiserOuiOuNon(int $idEmploye) : array{
+		$data = bdd_select( 'SELECT reinitialisation FROM employe WHERE idEmploye =?', [$idEmploye] );
+		return $data;
+	}
+	
+	//Mettre la valeur réinitialiser à false (0)
+	function reinitialiserNon(int $idEmploye) {
+		$false = 0;
+		
+		bdd_update( "UPDATE employe SET reinitialisation=:reinitialisation WHERE idEmploye=$idEmploye", [
+			'reinitialisation' => htmlspecialchars($false)
+		] );
+	}
+	
+	//Mettre la valeur réinitialiser à true (1)
+	function reinitialiserOui(int $idEmploye) {
+		$true = 1;
+		
+		bdd_update( "UPDATE employe SET reinitialisation=:reinitialisation WHERE idEmploye=$idEmploye", [
+			'reinitialisation' => htmlspecialchars($true)
+		] );
+	}
+	
 	//Récupère login, jours et crédits de l'utilisateur pour le menu 'Bienvenu $votrePseudo'
 	function getNomJoursCredit(int $idEmploye) : array{
-		$data = bdd_select( 'SELECT login, creditEmploye, nbJoursEmploye FROM employe WHERE idEmploye =?', [$idEmploye] );
+		$data = bdd_select( 'SELECT nomEmploye, prenomEmploye, login, creditEmploye, nbJoursEmploye FROM employe WHERE idEmploye =?', [$idEmploye] );
 		return $data;
 	};
 	
@@ -59,6 +83,16 @@
 		}else {
 			return false;
 		}
+	};
+	
+	//Savoir si l'employé existe et si la variable de SESSION "$superieur" est bien son supérieur (évite modification directement de l'URL)
+	function utilisateurExisteSuperieur(int $idEmploye, int $superieur) : array{
+		$data = bdd_select( "SELECT idEmploye
+				FROM employe
+				WHERE idEmploye = $idEmploye
+				AND superieur = ?", [$superieur] );
+				 
+		return $data;
 	};
 		
 ?>

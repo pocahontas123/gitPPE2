@@ -1,17 +1,19 @@
-﻿<?php
-//session_start();
-if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
-    header('Location: login.php');
-}
+<?php
+
+	//session_start();
+	if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
+		header('Location: login.php');
+	}
+	
 	extract($_POST);
-	$data = rechercheFormation($search);
+	$data = rechercheFormation($search, $_SESSION['idEmploye']);
+	
 ?>
 <h1>Recherche de formations :</h1>
 <!-- On affiche le contenu de $data -->
 <div id="formationsList4">
-	<?php foreach($data as $key => $formations) :?>
-	
 
+	<?php foreach($data as $key => $formations) :?>
 	
 		<table class="table table-hover">
 			<thead>
@@ -45,7 +47,7 @@ if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
 					<td><?= $formations['prerequis_formation']; ?></td>
 					<td><?= $formations['credit_formation']; ?></td>
                     <td><?= $formations['nomPrestataire']; ?></td>
-					<td><a href="pdf.php?titre_formation=<?= $formations['titre_formation']; ?>&amp;contenu_formation=<?= $formations['contenu_formation']; ?>&amp;date_formation=<?= $formations['date_formation']; ?>&amp;nbJours_formation=<?= $formations['nbJours_formation']; ?>&amp;lieu_formation=<?= $formations['lieu_formation']; ?>&amp;prerequis_formation=<?= $formations['prerequis_formation']; ?>&amp;credit_formation=<?= $formations['credit_formation']; ?>"><i><button class="btn btn-info">pdf</button></i></td>
+					<td><a href="pdf.php?idFormation=<?= $formations['idFormation'] ;?>"><i><button class="btn btn-info">pdf</button></i></td>
 					
 					<?php if($formations['etat'] != NULL) { ?>
 					<td><?= $formations['etat']; ?> </td>

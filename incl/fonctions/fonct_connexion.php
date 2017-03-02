@@ -1,5 +1,6 @@
 <?php
 
+	//vérifie si le login fournis correspond à qlq chose
 	function account_exists() : array{
 		$membre = bdd_select( 'SELECT idEmploye, mdp, typeEmploye FROM employe WHERE login = ?', [$_POST['login']] );
 		
@@ -12,7 +13,5 @@
 			return [];
 		}
 	};
-
-
-
+	
 ?>

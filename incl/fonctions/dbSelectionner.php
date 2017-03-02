@@ -11,10 +11,15 @@
 	};
 	
 	//Ajoute un formation à l'employer dans 'Mes formation(s)' sous le status 'En cours'
-	function ajoutSelection( int $idEmploye, int $idFormation ) {
+	function ajoutSelection( int $idEmploye, int $idFormation, int $typeEmploye ) {
 		include('pdo.php');
 		
-		$message = 'En cours';
+		if( $typeEmploye == 3 ) {	
+			$message = 'En cours';
+		//directement valider la formation pour un chef
+		}elseif( $typeEmploye == 2 ) {
+			$message = 'Validée';
+		}
 		
 		bdd_insert( 'INSERT INTO selectionner  VALUES(:idEmploye, :idFormation, :message)', [
 			'idEmploye' => htmlspecialchars($idEmploye),
@@ -34,6 +39,6 @@
 					'idEmploye' => $idEmploye,
 					'idFormation' => $idFormation
 		] );
-	}
+	};
 	
 ?>

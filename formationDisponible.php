@@ -1,24 +1,22 @@
-﻿<?php
-//session_start();
-if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
-    header('Location: login.php');
-}
+<?php
+
+	//session_start();
+	if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
+		header('Location: login.php');
+	}
+
 	$idEmploye = $_SESSION['idEmploye'];
-	$data	= rechercheToutesFormation($idEmploye);
-	//var_dump($data);
+	$data = rechercheToutesFormation($idEmploye);
+	
 ?>
 
-
 <br/><br/>
-<!-- On affiche le contenu de $data -->
+
 <!-- On affiche le contenu de $data -->
 <div id="formationsList2">
+
 	<?php foreach($data as $key => $formations) :?>
-	
 
-		
-
-	
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -28,11 +26,9 @@ if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
 					<th>Duree (Nb Jours)</th>
 					<th>Lieu</th>
 					<th>Prérequis</th>
-
 					<th>Crédit(s)</th>
                     <th>Prestataire</th>
 					<th>PDF</th>
-
 					<th>Inscription</th>
 				</tr>
 			</thead>
@@ -47,17 +43,17 @@ if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
 					<td><?= $formations['nbJours_formation']; ?></td>
 					<td><?= $formations['lieu_formation']; ?></td>
 					<td><?= $formations['prerequis_formation']; ?></td>
-
-
                     <td><?= $formations['credit_formation']; ?></td>
                     <td><?= $formations['nomPrestataire']; ?></td>
-					<td><a href="pdf.php?titre_formation=<?= $formations['titre_formation']; ?>&amp;contenu_formation=<?= $formations['contenu_formation']; ?>&amp;date_formation=<?= $formations['date_formation']; ?>&amp;nbJours_formation=<?= $formations['nbJours_formation']; ?>&amp;lieu_formation=<?= $formations['lieu_formation']; ?>&amp;prerequis_formation=<?= $formations['prerequis_formation']; ?>&amp;credit_formation=<?= $formations['credit_formation']; ?>"><i><button class="btn btn-info">pdf</button></i></td>
+					
+					<!--Lien des infos de la formation vers pdf.php-->
+					<td><a href="pdf.php?idFormation=<?= $formations['idFormation'] ;?>"><i><button class="btn btn-info">pdf</button></i></td>
 					
 					<td><a href="index.php?idFormation=<?= $formations['idFormation'] ;?>&formation=2&inscription=1"><i><button class="btn btn-primary">Inscription</button></i></a></td>
 				</tr>
 			</tbody>
 		</table>
 		
-		<?php endforeach; ?>
+	<?php endforeach; ?>
 		
 </div>

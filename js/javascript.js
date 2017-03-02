@@ -5,10 +5,7 @@ $("#inputRecherche").mouseover(function() {
 	$(this).animate({ width: "100px" }, 500);
 });
 
-$("#menuPerso").on("click", function() {
-	$(this).css("color", "red");
-});
-
+//animation menu utilisateur
 $(document).ready(function() {
 	var nav = $("#nav-bar");
 	var button = $("#button-menu");

@@ -30,7 +30,9 @@
 		else {
 			$req = $bdd->query( $query );
 		}
+		
 		$req->closeCursor();
+		
 		return $req;
 	};
 	
@@ -45,6 +47,7 @@
 		else {
 			$req = $bdd->query( $query );
 		}
+		
 		$req->closeCursor();
 	};
 	
@@ -59,6 +62,7 @@
 		else {
 			$req = $bdd->query( $query );
 		}
+		
 		$req->closeCursor();
 	};
 

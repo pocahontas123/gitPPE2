@@ -1,14 +1,15 @@
-﻿<?php
-//session_start();
-if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
-    header('Location: login.php');
-}
-	$data = rechercheHistoriqueFormations();
+<?php
+	//session_start();
+	if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
+		header('Location: login.php');
+	}
+
+	$idEmploye = $_SESSION['idEmploye'];
+	$data = rechercheHistoriqueFormations( $idEmploye );
 ?>
 
-
 <br/><br/>
-<!-- On affiche le contenu de $data -->
+
 <!-- On affiche le contenu de $data -->
 <div id="formationsList3">
 	<?php foreach($data as $key => $formations) :?>
@@ -27,7 +28,7 @@ if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
 					<th>Crédit(s)</th>
                     <th>Prestataire</th>
 					<th>PDF</th>
-					<?php if ($formations['etat'] != NULL) { ?>
+					<?php if($formations['etat'] != NULL) { ?>
 					<th>ETAT</th>
 					<?php } if($formations['etat']!= 'Effectuée' ) { ?>
 					<th>Inscription</th>
@@ -40,7 +41,7 @@ if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
 					<td><?= $formations['contenu_formation'] ;?></td>
 					
 					<?php $dateFormation = $formations['date_formation']; ?>
-					<td><?= afficherDate($dateFormation); ?></td>
+					<td><?= afficherDate( $dateFormation ); ?></td>
 					
 					<td><?= $formations['nbJours_formation']; ?></td>
 					<td><?= $formations['lieu_formation']; ?></td>
@@ -48,8 +49,8 @@ if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
 					<td><?= $formations['credit_formation']; ?></td>
                     <td><?= $formations['nomPrestataire']; ?></td>
 
-                    <td><a href="pdf.php?titre_formation=<?= $formations['titre_formation']; ?>&amp;contenu_formation=<?= $formations['contenu_formation']; ?>&amp;date_formation=<?= $formations['date_formation']; ?>&amp;nbJours_formation=<?= $formations['nbJours_formation']; ?>&amp;lieu_formation=<?= $formations['lieu_formation']; ?>&amp;prerequis_formation=<?= $formations['prerequis_formation']; ?>&amp;credit_formation=<?= $formations['credit_formation']; ?>"><i><button class="btn btn-info">pdf</button></i></td>
-
+					<td><a href="pdf.php?idFormation=<?= $formations['idFormation'] ;?>"><i><button class="btn btn-info">pdf</button></i></td>
+					
 					<?php if($formations['etat'] != NULL) { ?>
 					<td><?= $formations['etat']; ?> </td>
 					<?php }
