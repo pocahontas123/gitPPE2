@@ -5,6 +5,7 @@ $("#inputRecherche").mouseover(function() {
 	$(this).animate({ width: "100px" }, 500);
 });
 
+
 //animation menu utilisateur
 $(document).ready(function() {
 	var nav = $("#nav-bar");

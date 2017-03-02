@@ -2,6 +2,7 @@
 	//Je lance ma session
 	session_start();
 	
+	
 	/*Si j'ai déjà mes superglobale de SESSION['idEmploye'] et 'mdp', je n'ai rien à faire sur login.php
 	  vu que je suis "théoriquement" déjà connecté
 	*/

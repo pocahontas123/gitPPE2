@@ -7,6 +7,7 @@
 		//header('Location: login.php', true);
 	}
 	
+	
 	$idEmploye = $_SESSION['idEmploye'];
 	$typeEmploye = $_SESSION['typeEmploye'];
 	

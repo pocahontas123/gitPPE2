@@ -1,5 +1,6 @@
 <?php	
 
+
 	require('fonct_bd.php');
 	
 	//Recherche formations FUTURES pour lesquels l'utilisateur N'EST PAS INSCRIT (pas idFormation dans la table selectionner)

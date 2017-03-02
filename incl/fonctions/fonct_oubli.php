@@ -1,5 +1,6 @@
 <?php
 
+
 	function identifiant_exists() : bool {
 		$membre = bdd_select( 'SELECT login FROM employe WHERE  login = ?', [$_POST['login']] );
 		

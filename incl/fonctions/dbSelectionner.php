@@ -1,5 +1,6 @@
 <?php
 
+
 	//Supprime une ligne dans la table 'selectionner'
 	function supprimerSelection( int $idEmploye, int $idFormation ) {
 		include('pdo.php');

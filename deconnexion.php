@@ -1,4 +1,5 @@
 <?php
+
 	/*Résumé de la page:
 	1)  Je vide ma SESSION
 	2)  Je tue mes cookies

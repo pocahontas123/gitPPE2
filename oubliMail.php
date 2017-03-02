@@ -5,6 +5,7 @@
 		//J'extrais mes données du formulaire sous la forme '$identifiant' et '$password'
 		extract( $_POST );
 		
+		
 		//lien avec ma page de fonctions
 		require_once ('incl/fonctions/fonct_bd.php');
 		require_once ('incl/fonctions/fonct_oubli.php');

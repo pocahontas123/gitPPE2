@@ -1,5 +1,6 @@
 <?php
 
+
 	//session_start();
 	if( !isset( $_SESSION['idEmploye'] ) AND !isset ( $_SESSION['mdp'] ) ) {
 		header('Location: login.php');

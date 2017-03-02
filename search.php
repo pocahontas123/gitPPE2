@@ -13,6 +13,7 @@
 <!-- On affiche le contenu de $data -->
 <div id="formationsList4">
 
+
 	<?php foreach($data as $key => $formations) :?>
 	
 		<table class="table table-hover">

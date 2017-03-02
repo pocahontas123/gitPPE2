@@ -10,6 +10,7 @@
 
 <div id="formationsList">
 
+
 	
 
 		<table class="table table-hover">

@@ -1,5 +1,6 @@
 <?php
 	
+	
 	//Gère les requêtes de type 'SELECT' dans la base de données
 	function bdd_select( string $query, array $params = [] ) : array {
 		require 'pdo.php';

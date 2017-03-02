@@ -15,6 +15,7 @@
 			$erreur['login'] = "L'identifiant n'existe pas";
 		}
 		
+		
 		//Si le tableau n'a pas d'erreurs, formulaire OK !
 		if( !$erreur ) {
 			$subject = "Récupération du mot de passe perdu";

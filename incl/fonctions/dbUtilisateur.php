@@ -1,5 +1,6 @@
 <?php
 	
+	
 	//Permet de RECUPERER les jours et crédits de la formation après s'être DESINSCRIT
 	function ajoutJourCreditUtilisateur(int $idEmploye, int $idFormation) {
 		

@@ -10,6 +10,7 @@
 	require_once "html2pdf/html2pdf.class.php";
 	require 'incl/fonctions/dbFormation.php';
 	
+	
 	extract($_GET);
 	if( isset($_GET['idFormation']) AND rechercheNomFormation( $_GET['idFormation'] ) ) {
 		
